@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+      <title>Object Oriented JavaScript</title>
+  </head>
+  <body>
+    <script type="text/Javascript">
+
+    var addStuff = {
+      sum(num1, num2){
+        return num1 + num2;
+      }
+    }
+    document.write("1 + 2 =", addStuff.sum(1,2) + "<br />");
+
+    class Point {
+      constructor(xPos, yPos){
+        this.xPos = xPos;
+        this.yPos = yPos;
+      }
+
+      getPos(){
+        return "X: " + this.xPos + " Y: " + this.yPos;
+      }
+    }
+    var point = new Point(100, 200);
+
+    document.write("Point Pos : " + point.getPos() + "<br />");
+
+    class Animal {
+      constructor(name){
+        this.name = name;
+      }
+      toString(){
+        return "Animal is name " + this.name;
+      }
+      static getAnimal(){
+        return new Animal("No Name");
+      }
+    }
+    class Dog extends Animal{
+      constructor(name, owner){
+        super(name);
+        this.owner = owner;
+      }
+
+      toString(){
+        return super.toString() + "<br />Dog is named " + this.name
+      }
+    }
+    var rover = new Dog("Rover", "Paul");
+
+    document.write(rover.name  + " is owned by " + rover.owner   + "<br />");
+
+    document.write(rover.toString() + "<br />");
+
+    var bowser = Animal.getAnimal();
+
+    document.write("Bowser info : " + bowser.toString() + "<br />");
+
+// this is the output:
+// 1 + 2 =3
+// Point Pos : X: 100 Y: 200
+// Rover is owned by Paul
+// Animal is name Rover
+// Dog is named Rover
+// Bowser info : Animal is name No Name
+
+    </script>
+  </body>
+</html>
