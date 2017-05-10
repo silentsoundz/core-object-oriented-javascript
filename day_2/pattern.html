@@ -1,0 +1,157 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+      <title>Object Oriented JavaScript</title>
+  </head>
+  <body>
+    <script type="text/Javascript">
+
+// SINGLETON PATTERN
+    function Hero(name){
+      if(typeof Hero.instance === 'object'){
+        return Hero.instance;
+      }
+
+      this.name = name;
+      Hero.instance = this;
+      return this;
+    }
+
+    var derekHero = Hero("Derak");
+    document.write("Our hero is " + derekHero.name + "<br />");
+
+    var paulHero = Hero("Paul");
+    document.write("Our hero is " + paulHero.name + "<br />");
+
+// this is the output:
+// Our hero is Derak
+// Our hero is Derak (can only create one hero)
+
+// FACTORY PATTERN
+    function Sword(desc){
+      this.weaponType = "Sword";
+      this.metal = desc.metal || "Steel";
+      this.style = desc.style || "Longsword";
+      this.hasMagic = desc.hasMagic || false;
+    }
+
+    function Bow(desc){
+      this.weaponType = "Bow";
+      this.material = desc.material || "Wood";
+      this.style = desc.style || "Longbow";
+      this.hasMagic = desc.hasMagic || false;
+    }
+
+    function WeaponFactory(){};
+
+    WeaponFactory.prototype.makeWeapon = function(desc){
+      var weaponClass = null;
+
+      if(desc.weaponType === "Sword"){
+        weaponClass = Sword;
+      } else if(desc.weaponType === "Bow"){
+        weaponClass = Bow;
+      } else {
+        return false
+      }
+      return new weaponClass(desc);
+    }
+
+    var myWeaponFact = new WeaponFactory();
+    var bladeFist = myWeaponFact.makeWeapon({
+      weaponType: "Sword",
+      metal: "Dark Iron",
+      style: "Scythe",
+      hasMagic: true
+    });
+
+    document.write(bladeFist.weaponType + " of type " + bladeFist.style + " crafted from " + bladeFist.metal + "<br />");
+
+//this is the output:
+//Sword of type Scythe crafted from Dark Iron
+
+
+//DECORATOR PATTERN
+  function Pizza(price){
+    this.price = price || 10;
+  }
+
+  Pizza.prototype.getPrice = function(){
+    return this.price;
+  }
+
+  function ExtraCheese(pizza){
+    var prevPrice = pizza.price;
+
+    pizza.price = prevPrice + 1;
+  }
+
+  var myPizza = new Pizza(10);
+
+  ExtraCheese(myPizza);
+
+  document.write("Cost of Pizza : $" + myPizza.price + "<br />")
+// this is the output:
+// Cost of Pizza : $11
+
+// OBSERVER PATTERN
+
+    var Observable = function(){
+      this.suscribers = [];
+    }
+    Observable.prototype = {
+      subscribe: function(subscriber){
+        this.subscribers.push(subscriber);
+      },
+
+      unsubscribe: function(unsubscriber){
+        for (i = 0; i < this.subscribers.length; i++) {
+          if(this.subscribers[i] === unsubscriber){
+            this.subscribers.splice(i, 1);
+            return unsubscriber.name;
+          }
+        }
+      },
+      publish: function(data){
+        for (i = 0; i < this.subscribers.length; i++) {
+          this.subscribers[i].receiveData(data);
+        }
+      }
+
+    };
+
+    var OrganFanny = {
+      name: "Organ Fanny",
+      receiveData: function(data){
+        document.write(this.name + " received your info " + data + "<br />");
+      }
+    }
+
+    var BoldmanYaks = {
+      name: "Boldman Yaks",
+      receiveData: function(data){
+        document.write(this.name + " received your info " + data + "<br />");
+      }
+    }
+
+    observable = new Observable();
+
+    observable.suscribe(OrganFanny);
+    observable.suscribe(BoldmanYaks);
+
+    observable.publish('IBM at $145.30');
+
+    document.write(observable.unsubscribe(OrganFanny) + " unscribed<br />");
+
+    observable.publish('IBM at $144.30');
+
+//this is the output:
+// Organ Fanny received your info IBM at $145.30
+// Boldman Yaks received your info IBM at $145.30
+// Organ Fanny unscribed
+// Boldman Yaks received your info IBM at $144.30
+
+    </script>
+  </body>
+</html>
